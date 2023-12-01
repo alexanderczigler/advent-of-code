@@ -9,6 +9,12 @@ const readInterface = readline.createInterface({
 });
 
 const numberMapper = {
+  oneight: 18,
+  twone: 21,
+  fiveight: 58,
+  eightwo: 82,
+  eighthree: 83,
+  nineight: 98,
   one: 1,
   two: 2,
   three: 3,
