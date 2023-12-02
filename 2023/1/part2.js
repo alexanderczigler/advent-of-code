@@ -1,5 +1,6 @@
 const readline = require("readline");
 const fs = require("fs");
+const assert = require("assert");
 
 const input = "./input";
 
@@ -61,5 +62,7 @@ readInterface.on("line", function (line) {
 });
 
 readInterface.on("close", () => {
+  const expectedAnswer = 54473;
+  assert(answer === expectedAnswer, `Wrong answer, expected ${expectedAnswer}`);
   console.log("✨", answer);
 });
