@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { isNumber } = require("./isNumber");
+const isNumber = require("./isNumber");
 
 function isAdjacentToSymbol(schematic, line, col) {
   for (let l = line - 1; l <= line + 1; l++) {
@@ -69,7 +69,7 @@ testSchematic[5] = [".", ".", ".", ".", ".", "+", ".", "5", "8", "."];
 testSchematic[6] = [".", ".", "5", "9", "2", ".", ".", ".", ".", "."];
 testSchematic[7] = [".", ".", ".", ".", ".", ".", "7", "5", "5", "."];
 testSchematic[8] = [".", ".", ".", "$", ".", "*", ".", ".", ".", "."];
-testSchematic[9] = [".", "6", "6", "4", "5", "9", "8", ".", ".", "."];
+testSchematic[9] = [".", "6", "6", "4", ".", "5", "9", "8", ".", "."];
 
 assert(isAdjacentToSymbol(testSchematic, 0, 0) === false);
 assert(isAdjacentToSymbol(testSchematic, 0, 2) === true);
