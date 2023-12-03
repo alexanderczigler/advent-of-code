@@ -31,8 +31,6 @@ function getPartNumberSum(from) {
       line++;
     }
 
-    console.log("iteration", iterations, "line", line, "col", col);
-
     if (isNumber(from[line][col])) {
       const number = parseInt(getNumber(from[line], col));
 
@@ -76,7 +74,8 @@ assert(getPartNumberSum(testSchematic) === 4361);
 assert(getPartNumberSum(testSchematic2) === 314);
 
 readInterface.on("close", () => {
-  console.log(schematic);
   const sum = getPartNumberSum(schematic);
-  console.log(`The sum of part numbers is ${sum}`);
+  assert(sum === 540025);
+
+  console.log(`✨ The sum of part numbers is ${sum}`);
 });
