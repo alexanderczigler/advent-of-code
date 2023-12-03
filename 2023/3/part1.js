@@ -35,7 +35,6 @@ function getPartNumberSum(from) {
       const number = parseInt(getNumber(from[line], col));
 
       if (isNumberAdjacentToSymbol(from, line, col)) {
-        console.log("number", number, "is adjacent to symbol");
         sum += number;
 
         col += getDigits(number);
