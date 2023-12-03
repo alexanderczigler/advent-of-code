@@ -15,7 +15,7 @@ function isNumberAdjacentToSymbol(schematic, line, col) {
       }
 
       if (isNumber(schematic[l][c])) {
-        const number = getNumber(schematic[l], c);
+        const number = parseInt(getNumber(schematic[l], c));
 
         if (number < 10) {
           return isAdjacentToSymbol(schematic, l, c);
@@ -35,6 +35,8 @@ function isNumberAdjacentToSymbol(schematic, line, col) {
     }
   }
 }
+
+module.exports = isNumberAdjacentToSymbol;
 
 const testSchematic = [];
 testSchematic[0] = ["4", "6", "7", ".", ".", "1", "1", "4", ".", "."];
