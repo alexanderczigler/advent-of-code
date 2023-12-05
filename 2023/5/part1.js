@@ -2,6 +2,7 @@ const assert = require("assert");
 const input = require("../input");
 const getRangeMap = require("./getRangeMap");
 const getSeeds = require("./getSeeds");
+const getLocationForSeed = require("./getLocationForSeed");
 const readInterface = input.reader("5.test");
 
 const plantStructure = {
@@ -24,7 +25,6 @@ readInterface.on("line", function (line) {
   } else if (line.endsWith("map:")) {
     currentMap = getCurrentMap(line);
   } else {
-    console.log(line);
     const rangeMap = getRangeMap(line);
 
     Object.keys(rangeMap).forEach((key) => {
@@ -64,6 +64,29 @@ assert(
 );
 assert(getCurrentMap("humidity-to-location map:") === "humidityToLocationMap");
 
+function getLocationsForSeeds(plantStructure) {
+  return plantStructure.seeds.map((seed) =>
+    getLocationForSeed(plantStructure, seed)
+  );
+}
+
+assert(
+  getLocationsForSeeds({
+    seeds: [1],
+    seedToSoilMap: { 1: 2 },
+    soilToFertilizerMap: { 2: 40 },
+    fertilizerToWaterMap: {},
+    waterToLightMap: {},
+    lightToTemperatureMap: { 40: 1337 },
+    temperatureToHumidityMap: {},
+    humidityToLocationMap: { 1337: 13337 },
+  }).length === 1
+);
+
 readInterface.on("close", function () {
-  console.log(plantStructure);
+  const locations = getLocationsForSeeds(plantStructure);
+  const lowestLocation = Math.min(...locations);
+
+  assert(lowestLocation === 35);
+  console.log(`✨ The lowest location is ${lowestLocation}`);
 });
