@@ -1,14 +1,6 @@
-const readline = require("readline");
-const fs = require("fs");
 const assert = require("assert");
-
-const input = "./input";
-
-const readInterface = readline.createInterface({
-  input: fs.createReadStream(input),
-  output: process.stdout,
-  console: false,
-});
+const input = require("../input");
+const readInterface = input.reader(1);
 
 let answer = 0;
 
