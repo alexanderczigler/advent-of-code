@@ -1,59 +1,35 @@
 const assert = require("assert");
 
 function getRangeMap(line) {
-  const { source, destination } = getRanges(line);
-
-  const rangeMap = {};
-
-  for (let i = 0; i < source.length; i++) {
-    rangeMap[source[i]] = destination[i];
-  }
+  const values = line.split(" ").map((value) => parseInt(value));
+  const rangeMap = {
+    destination: values[0],
+    source: values[1],
+    range: values[2],
+  };
 
   return rangeMap;
 }
 
-function getRanges(line) {
-  const values = line.split(" ").map((value) => parseInt(value));
-  const length = values[2];
+const testMap1 = "2400884472 2567132380 1279237224";
+const testMap2 = "0 459278395 111483239";
+const testMap3 = "698481161 97868205 361410190";
+const testMap4 = "1059891351 0 15994868";
 
-  let destination = [];
-  let source = [];
+assert(getRangeMap(testMap1).source === 2567132380);
+assert(getRangeMap(testMap1).destination === 2400884472);
+assert(getRangeMap(testMap1).range === 1279237224);
 
-  for (let i = values[0]; i < values[0] + length; i++) {
-    destination.push(i);
-  }
+assert(getRangeMap(testMap2).source === 459278395);
+assert(getRangeMap(testMap2).destination === 0);
+assert(getRangeMap(testMap2).range === 111483239);
 
-  for (let i = values[1]; i < values[1] + length; i++) {
-    source.push(i);
-  }
+assert(getRangeMap(testMap3).source === 97868205);
+assert(getRangeMap(testMap3).destination === 698481161);
+assert(getRangeMap(testMap3).range === 361410190);
 
-  return {
-    source,
-    destination,
-  };
-}
-
-assert(getRanges("1 10 3").destination.length === 3);
-assert(getRanges("1 10 3").destination[0] === 1);
-assert(getRanges("1 10 3").destination[1] === 2);
-assert(getRanges("1 10 3").destination[2] === 3);
-
-assert(getRanges("1 10 3").source.length === 3);
-assert(getRanges("1 10 3").source[0] === 10);
-assert(getRanges("1 10 3").source[1] === 11);
-assert(getRanges("1 10 3").source[2] === 12);
-
-assert(getRanges("50 98 2").destination.length === 2);
-assert(getRanges("50 98 2").destination[0] === 50);
-assert(getRanges("50 98 2").destination[1] === 51);
-
-assert(getRanges("50 98 2").source.length === 2);
-assert(getRanges("50 98 2").source[0] === 98);
-assert(getRanges("50 98 2").source[1] === 99);
-
-assert(getRangeMap("1 10 3")[11] === 2);
-assert(getRangeMap("1 10 3")[12] === 3);
-
-assert(getRangeMap("50 98 2")[98] === 50);
+assert(getRangeMap(testMap4).source === 0);
+assert(getRangeMap(testMap4).destination === 1059891351);
+assert(getRangeMap(testMap4).range === 15994868);
 
 module.exports = getRangeMap;

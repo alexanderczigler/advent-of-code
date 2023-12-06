@@ -7,13 +7,13 @@ const readInterface = input.reader("5.test");
 
 const plantStructure = {
   seeds: [],
-  seedToSoilMap: {},
-  soilToFertilizerMap: {},
-  fertilizerToWaterMap: {},
-  waterToLightMap: {},
-  lightToTemperatureMap: {},
-  temperatureToHumidityMap: {},
-  humidityToLocationMap: {},
+  seedToSoilMap: [],
+  soilToFertilizerMap: [],
+  fertilizerToWaterMap: [],
+  waterToLightMap: [],
+  lightToTemperatureMap: [],
+  temperatureToHumidityMap: [],
+  humidityToLocationMap: [],
 };
 
 let currentMap = "";
@@ -26,10 +26,7 @@ readInterface.on("line", function (line) {
     currentMap = getCurrentMap(line);
   } else {
     const rangeMap = getRangeMap(line);
-
-    Object.keys(rangeMap).forEach((key) => {
-      plantStructure[currentMap][key] = rangeMap[key];
-    });
+    plantStructure[currentMap].push(rangeMap);
   }
 });
 
@@ -70,22 +67,11 @@ function getLocationsForSeeds(plantStructure) {
   );
 }
 
-assert(
-  getLocationsForSeeds({
-    seeds: [1],
-    seedToSoilMap: { 1: 2 },
-    soilToFertilizerMap: { 2: 40 },
-    fertilizerToWaterMap: {},
-    waterToLightMap: {},
-    lightToTemperatureMap: { 40: 1337 },
-    temperatureToHumidityMap: {},
-    humidityToLocationMap: { 1337: 13337 },
-  }).length === 1
-);
-
 readInterface.on("close", function () {
   const locations = getLocationsForSeeds(plantStructure);
   const lowestLocation = Math.min(...locations);
+
+  console.log(locations, lowestLocation);
 
   assert(lowestLocation === 35);
   console.log(`✨ The lowest location is ${lowestLocation}`);
