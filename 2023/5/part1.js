@@ -3,7 +3,7 @@ const input = require("../input");
 const getRangeMap = require("./getRangeMap");
 const getSeeds = require("./getSeeds");
 const getLocationForSeed = require("./getLocationForSeed");
-const readInterface = input.reader("5.test");
+const readInterface = input.reader("5");
 
 const plantStructure = {
   seeds: [],
@@ -71,8 +71,6 @@ readInterface.on("close", function () {
   const locations = getLocationsForSeeds(plantStructure);
   const lowestLocation = Math.min(...locations);
 
-  console.log(locations, lowestLocation);
-
-  assert(lowestLocation === 35);
+  assert(lowestLocation === 525792406);
   console.log(`✨ The lowest location is ${lowestLocation}`);
 });
