@@ -62,35 +62,31 @@ assert(
 assert(getCurrentMap("humidity-to-location map:") === "humidityToLocationMap");
 
 function getLocationsForSeeds(plantStructure) {
-  return new Promise((resolve, reject) => {
-    let lowestLocation = 0;
+  let lowestLocation = 0;
 
-    plantStructure.seedPairs.forEach((seedPair) => {
-      console.log("Go through seed pair", seedPair);
+  plantStructure.seedPairs.forEach((seedPair, index) => {
+    console.log(
+      `Go through seed pair ${index + 1} (${seedPair.from} to ${
+        seedPair.to
+      })...`
+    );
 
-      for (let i = seedPair.from; i <= seedPair.to; i++) {
-        const location = getLocationForSeed(plantStructure, i);
+    for (let i = seedPair.from; i <= seedPair.to; i++) {
+      const location = getLocationForSeed(plantStructure, i);
 
-        if (location < lowestLocation || lowestLocation === 0) {
-          lowestLocation = location;
-        }
+      if (location < lowestLocation || lowestLocation === 0) {
+        lowestLocation = location;
       }
-    });
+    }
 
-    console.log("Done!");
-    return resolve(lowestLocation);
+    console.log("...done");
   });
+
+  return lowestLocation;
 }
 
 readInterface.on("close", function () {
-  getLocationsForSeeds(plantStructure)
-    .then((lowestLocation) => {
-      console.log("lowest", lowestLocation);
-
-      assert(lowestLocation === 79004094);
-      console.log(`✨ The lowest location is ${lowestLocation}`);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  const lowestLocation = getLocationsForSeeds(plantStructure);
+  assert(lowestLocation === 79004094);
+  console.log(`✨ The lowest location is ${lowestLocation}`);
 });
