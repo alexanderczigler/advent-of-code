@@ -1,5 +1,5 @@
 const assert = require("assert");
-const isNumber = require("../utils/isNumber");
+const fs = require("fs");
 
 const testInput = `
 32T3K 765
@@ -9,6 +9,8 @@ KTJJT 220
 QQQJA 483
 `;
 
+const input = fs.readFileSync("../input/7", "utf8");
+console.log(input);
 function handIsFiveOfAKind(hand) {
   return new Set(hand.split("")).size === 1;
 }
@@ -57,6 +59,29 @@ assert(handIsThreeOfAKind("AAAAA") === false);
 assert(handIsThreeOfAKind("AA8AA") === false);
 assert(handIsThreeOfAKind("23332") === true);
 
+function handIsFullHouse(hand) {
+  const counts = {};
+  for (let card of hand) {
+    counts[card] = (counts[card] || 0) + 1;
+  }
+
+  let hasThreeOfAKind = false;
+  let hasPair = false;
+  for (let count of Object.values(counts)) {
+    if (count === 3) {
+      hasThreeOfAKind = true;
+    } else if (count === 2) {
+      hasPair = true;
+    }
+  }
+
+  return hasThreeOfAKind && hasPair;
+}
+
+assert(handIsFullHouse("32T3K") === false);
+assert(handIsFullHouse("AA8AA") === false);
+assert(handIsFullHouse("23332") === true);
+
 function handIsTwoPair(hand) {
   const counts = {};
   for (let card of hand) {
@@ -81,6 +106,36 @@ assert(handIsTwoPair("AAAAA") === false);
 assert(handIsTwoPair("AA8AA") === false);
 assert(handIsTwoPair("23332") === false);
 assert(handIsTwoPair("KTJJT") === true);
+
+function handIsOnePair(hand) {
+  const counts = {};
+  for (let card of hand) {
+    counts[card] = (counts[card] || 0) + 1;
+  }
+
+  let pairFound = false;
+  for (let count of Object.values(counts)) {
+    if (count === 2) {
+      if (pairFound) {
+        // If a second pair is found, it's not a valid one pair hand
+        return false;
+      }
+      pairFound = true;
+    } else if (count > 2) {
+      // More than two of a kind is not valid for a one pair hand
+      return false;
+    }
+  }
+
+  return pairFound;
+}
+
+assert(handIsOnePair("32T3K") === true);
+assert(handIsOnePair("AAAAA") === false);
+assert(handIsOnePair("AA8AA") === false);
+assert(handIsOnePair("23332") === false);
+assert(handIsOnePair("KTJJT") === false);
+assert(handIsOnePair("KK678") === true);
 
 function getCardValue(card) {
   if (card === "A") {
@@ -158,6 +213,14 @@ function compareHands(hand1, hand2) {
     return -1;
   }
 
+  if (handIsFullHouse(hand1)) {
+    if (!handIsFullHouse(hand2)) {
+      return 1;
+    }
+  } else if (handIsFullHouse(hand2)) {
+    return -1;
+  }
+
   if (handIsThreeOfAKind(hand1)) {
     console.log(`hand 1 is three of a kind`);
     if (!handIsThreeOfAKind(hand2)) {
@@ -177,6 +240,13 @@ function compareHands(hand1, hand2) {
   }
 
   // TODO: Check for one pair
+  if (handIsOnePair(hand1)) {
+    if (!handIsOnePair(hand2)) {
+      return 1;
+    }
+  } else if (handIsOnePair(hand2)) {
+    return -1;
+  }
 
   // TODO: Check card by card.
   const hand1Cards = hand1.split("");
@@ -228,8 +298,8 @@ assert(compareHands("QQQJA", "KK677") === 1);
 assert(compareHands("QQQJA", "KTJJT") === 1);
 assert(compareHands("QQQJA", "QQQJA") === 0);
 
-function getHands(testInput) {
-  return testInput.trim().split("\n").map(getHand);
+function getHands(input) {
+  return input.trim().split("\n").map(getHand);
 }
 
 assert(
@@ -244,8 +314,8 @@ function getHand(line) {
 
 assert(getHand("32T3K 765").join(",") === "32T3K,765");
 
-function getWinnings(testInput) {
-  const hands = getHands(testInput);
+function getWinnings(input) {
+  const hands = getHands(input);
   const handsMap = {};
   for (const [hand, bid] of hands) {
     handsMap[hand] = bid;
@@ -263,6 +333,6 @@ function getWinnings(testInput) {
   return winnings;
 }
 
-const answer = getWinnings(testInput);
+const answer = getWinnings(input);
 console.log(`✨ Answer: ${answer}`);
-assert(answer === 6440, "Wrong answer!");
+assert(answer === 247823654, "Wrong answer!");
