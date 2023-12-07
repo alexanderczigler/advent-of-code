@@ -87,8 +87,8 @@ readInterface.on("close", function () {
     .then((lowestLocation) => {
       console.log("lowest", lowestLocation);
 
-      // assert(lowestLocation === 525792406);
-      // console.log(`✨ The lowest location is ${lowestLocation}`);
+      assert(lowestLocation === 79004094);
+      console.log(`✨ The lowest location is ${lowestLocation}`);
     })
     .catch((err) => {
       console.log(err);
