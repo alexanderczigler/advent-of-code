@@ -876,41 +876,58 @@ assert(getInstruction([0, 1], 1) === 1);
 assert(getInstruction([0, 1], 2) === 0);
 assert(getInstruction([0, 1], 3) === 1);
 
-function navigate(map, instructions, startLocations) {
-  let steps = 0;
-
-  let locations = [...startLocations];
-
-  while (true) {
+function navigate(map, instructions, location, steps) {
+  instructions.forEach((instruction) => {
+    // console.log(`At ${map[location]}, going ${instruction}`);
     steps++;
-    const nextInstruction = getInstruction(instructions, steps - 1);
+    location = map[location][instruction];
 
-    locations = locations.map((location) => {
-      console.log(
-        `At ${location} going ${nextInstruction} to ${map[location][nextInstruction]}`
-      );
-      location = map[location][nextInstruction];
-      return location;
-    });
-
-    let allAtEnd =
-      locations.filter((location) => {
-        return locationIsEnd(location);
-      }).length === locations.length;
-
-    if (allAtEnd) {
-      console.log("all", allAtEnd, steps);
-      break;
+    if (locationIsEnd(location)) {
+      // console.log(`Found end in ${steps} steps`);
+      return steps;
     }
+  });
+
+  if (locationIsEnd(location)) {
+    // console.log(`Found end in ${steps} steps`);
+    return steps;
   }
 
-  return steps;
+  return navigate(map, instructions, location, steps);
 }
 
 const map = getMap(input);
 const instructions = getInstructions(input);
 const startLocations = getStartLocations(map);
 
-const steps = navigate(map, instructions, startLocations);
-console.log(`✨ Part 1: ${steps}`);
-assert(steps === 6);
+const stepsArray = startLocations.map((location) => {
+  const steps = navigate(map, instructions, location, 0);
+  console.log(`Location ${location} takes ${steps} steps`);
+
+  return steps;
+});
+
+function gcd(a, b) {
+  while (b !== 0) {
+    let t = b;
+    b = a % b;
+    a = t;
+  }
+  return a;
+}
+
+function lcm(a, b) {
+  return Math.abs(a * b) / gcd(a, b);
+}
+
+function lcmArray(arr) {
+  let currentLcm = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    currentLcm = lcm(currentLcm, arr[i]);
+  }
+  return currentLcm;
+}
+
+const stepsLcm = lcmArray(stepsArray);
+console.log(`✨ Part 2: ${stepsLcm}`);
+assert(stepsLcm === 21366921060721);
