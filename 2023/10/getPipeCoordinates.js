@@ -38,6 +38,7 @@ function getPipeCoordinates(pipeMatrix, s, start) {
     previousLocation = { ...currentLocation };
     currentLocation = { ...nextLocation };
 
+    // Make pipe disappear.
     pipeMatrix[previousLocation.y][previousLocation.x] = " ";
 
     if (currentLocation.x === s.x && currentLocation.y === s.y) {

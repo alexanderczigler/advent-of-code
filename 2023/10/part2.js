@@ -2,6 +2,7 @@ const assert = require("assert");
 const getPipeMatrix = require("./getPipeMatrix");
 const findStartPipe = require("./findStartPipe");
 const getPipeCoordinates = require("./getPipeCoordinates");
+const isOutside = require("./isOutside");
 countSteps = require("./countSteps");
 
 const input = `
@@ -150,6 +151,24 @@ L-|JJ-L-FJJ.FJLFLJL7JJ---|J|-|FLF-|7.FLFF-JFL7L7|FJJ||F-7--|7.|-J.LL.L-77..|.L7.
 const matrix = getPipeMatrix(input);
 const s = findStartPipe(matrix);
 const start = { x: 108, y: 37 };
-const coordinates = getPipeCoordinates(matrix, s, start);
+const pipe = getPipeCoordinates(matrix, s, start);
 
-console.log(`✨ Part 2 : ${coordinates}`);
+const matrixCopy = matrix.map((row) => [...row]);
+
+for (let i = 0; i < matrixCopy.length; i++) {
+  for (let j = 0; j < matrixCopy[i].length; j++) {
+    console.log(`Checking ${i} ${j}`);
+    if (isOutside({ x: i, y: j }, pipe, matrixCopy)) {
+      matrixCopy[i][j] = "O";
+    }
+  }
+}
+
+for (let i = 0; i < matrixCopy.length; i++) {
+  console.log();
+  for (let j = 0; j < matrixCopy[i].length; j++) {
+    process.stdout.write(matrixCopy[i][j]);
+  }
+}
+
+// console.log(`✨ Part 2 : ${coordinates}`);
