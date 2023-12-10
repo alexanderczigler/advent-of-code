@@ -121,6 +121,22 @@ assert(step({ shape: "J", x: 1, y: 1 }, { x: 1, y: 0 }).y === 1);
 assert(step({ shape: "J", x: 1, y: 1 }, { x: 2, y: 1 }).x === 1);
 assert(step({ shape: "J", x: 1, y: 1 }, { x: 2, y: 1 }).y === 0);
 
+function findStartPipe(pipeMatrix) {
+  for (let i = 0; i < pipeMatrix.length; i++) {
+    for (let j = 0; j < pipeMatrix[i].length; j++) {
+      if (pipeMatrix[i][j] === "S") {
+        return { x: j, y: i };
+      }
+    }
+  }
+}
+
+assert(findStartPipe(getPipeMatrix(testInput1)).x === 1);
+assert(findStartPipe(getPipeMatrix(testInput1)).y === 1);
+
+assert(findStartPipe(getPipeMatrix(testInput2)).x === 0);
+assert(findStartPipe(getPipeMatrix(testInput2)).y === 2);
+
 function countSteps(pipeMatrix, startPipe) {
   let steps = 0;
   let [i, j] = getStartLocation(pipeMatrix);

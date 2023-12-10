@@ -1,0 +1,29 @@
+[init]
+  defaultBranch = main
+
+[fetch]
+  prune = true
+[pull]
+  autostash = true
+	rebase = true
+[push]
+  default = current
+
+[merge]
+  ff = only
+[rebase]
+  autosquash = true
+
+[commit]
+gpgsign = true
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
+[user]
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOaA1MQ+BwLPLPJSl8GHQ510Odd+/n8Pdd0eSpdSAZwJ
+  name = Alexander Czigler
+  email = git@ilix.se
