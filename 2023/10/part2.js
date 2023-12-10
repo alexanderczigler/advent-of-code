@@ -1,6 +1,7 @@
 const assert = require("assert");
 const getPipeMatrix = require("./getPipeMatrix");
 const findStartPipe = require("./findStartPipe");
+const getPipeCoordinates = require("./getPipeCoordinates");
 countSteps = require("./countSteps");
 
 const input = `
@@ -149,7 +150,6 @@ L-|JJ-L-FJJ.FJLFLJL7JJ---|J|-|FLF-|7.FLFF-JFL7L7|FJJ||F-7--|7.|-J.LL.L-77..|.L7.
 const matrix = getPipeMatrix(input);
 const s = findStartPipe(matrix);
 const start = { x: 108, y: 37 };
-const steps = countSteps(matrix, s, start) / 2;
+const coordinates = getPipeCoordinates(matrix, s, start);
 
-console.log(`✨ Part 1 : ${steps}`);
-assert(steps === 6768);
+console.log(`✨ Part 2 : ${coordinates}`);

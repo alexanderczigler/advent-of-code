@@ -27,9 +27,9 @@ function step(pipe, origin) {
 
   if (pipe.shape === "|") {
     if (pipe.y > origin.y) {
-      return { y: pipe.y + 1, x: pipe.x };
+      return { x: pipe.x, y: pipe.y + 1 };
     } else {
-      return { y: pipe.y - 1, x: pipe.x };
+      return { x: pipe.x, y: pipe.y - 1 };
     }
   }
 
